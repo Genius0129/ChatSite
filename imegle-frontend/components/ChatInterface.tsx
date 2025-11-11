@@ -77,8 +77,20 @@ export default function ChatInterface({ socket, onBack }: ChatInterfaceProps) {
       
       // Determine who should be the initiator (lower socket ID creates offer)
       // This prevents both peers from creating offers simultaneously
-      const mySocketId = socket.id
-      const partnerSocketId = data.partnerId
+      // Guard: Ensure both socket IDs exist before comparison
+      const mySocketId = socket?.id
+      const partnerSocketId = data?.partnerId
+      
+      if (!mySocketId || !partnerSocketId) {
+        console.warn('⚠️ Cannot determine initiator role: missing socket IDs', {
+          mySocketId,
+          partnerSocketId,
+        })
+        // Default to not being initiator if IDs are missing
+        isInitiatorRef.current = false
+        return
+      }
+      
       const shouldInitiate = mySocketId < partnerSocketId
       isInitiatorRef.current = shouldInitiate
       
@@ -781,9 +793,7 @@ export default function ChatInterface({ socket, onBack }: ChatInterfaceProps) {
         }, 3000) // Wait 3 seconds to see if it recovers
       } else if (pc.iceConnectionState === 'checking') {
         console.log('🧊 ICE checking - gathering candidates...')
-      } else if (pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed') {
-        // Reset retry count on successful ICE connection
-        webrtcRetryCountRef.current = 0
+        // Reset retry count on successful ICE connection (handled in the 'connected'/'completed' case above)
       }
     }
 
