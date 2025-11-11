@@ -18,8 +18,9 @@ COPY package*.json ./
 RUN npm ci --only=production
 
 COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
 COPY --from=builder /app/next.config.js ./next.config.js
+# Create public directory (Next.js may not have static assets, but directory is safe to create)
+RUN mkdir -p ./public
 
 EXPOSE 3000
 
