@@ -26,23 +26,40 @@ export default function Home() {
     // Auto-detect server URL based on current hostname and protocol
     const getServerUrl = () => {
       if (typeof window !== 'undefined') {
-        // If we have an env variable, use it
+        // PRIORITY 1: Use environment variable (set in Netlify)
         if (process.env.NEXT_PUBLIC_SERVER_URL) {
+          console.log('🔗 Using NEXT_PUBLIC_SERVER_URL:', process.env.NEXT_PUBLIC_SERVER_URL)
           return process.env.NEXT_PUBLIC_SERVER_URL
         }
-        // Detect protocol (http or https)
-        const protocol = window.location.protocol === 'https:' ? 'https:' : 'http:'
-        const hostname = window.location.hostname
         
+        // PRIORITY 2: Only use localhost fallback for local development
+        const hostname = window.location.hostname
         if (hostname === 'localhost' || hostname === '127.0.0.1') {
+          const protocol = window.location.protocol === 'https:' ? 'https:' : 'http:'
+          console.log('🔗 Using localhost fallback:', `${protocol}//localhost:3002`)
           return `${protocol}//localhost:3002`
         }
-        // For network access, use the same protocol and IP as frontend
-        return `${protocol}//${hostname}:3002`
+        
+        // PRIORITY 3: For deployed sites (Netlify, etc.), require env variable
+        console.error('❌ NEXT_PUBLIC_SERVER_URL not set!')
+        console.error('   Current hostname:', hostname)
+        console.error('   Please set NEXT_PUBLIC_SERVER_URL in Netlify environment variables')
+        // Don't show alert in production - just log error
+        // Return empty string to prevent invalid URL construction
+        return ''
       }
       return 'http://localhost:3002'
     }
     const serverUrl = getServerUrl()
+    console.log('🚀 Connecting to server:', serverUrl)
+    
+    // Don't attempt connection if server URL is invalid
+    if (!serverUrl || serverUrl === '') {
+      console.error('❌ Cannot connect: Server URL is not configured')
+      setIsConnected(false)
+      return
+    }
+    
     const newSocket = io(serverUrl, {
       transports: ['websocket', 'polling'],
       reconnection: true,
@@ -74,11 +91,13 @@ export default function Home() {
 
     setSocket(newSocket)
 
-    // Fetch initial stats
-    fetch(`${serverUrl}/api/stats`)
-      .then(res => res.json())
-      .then(data => setStats(data))
-      .catch(err => console.error('Failed to fetch stats:', err))
+    // Fetch initial stats (only if serverUrl is valid)
+    if (serverUrl && serverUrl !== '') {
+      fetch(`${serverUrl}/api/stats`)
+        .then(res => res.json())
+        .then(data => setStats(data))
+        .catch(err => console.error('Failed to fetch stats:', err))
+    }
 
     return () => {
       newSocket.close()

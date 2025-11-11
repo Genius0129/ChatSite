@@ -29,27 +29,27 @@ function AuthCallbackContent() {
         return
       }
 
-      if (token && userStr) {
+    if (token && userStr) {
         try {
           // Validate that userStr is valid JSON before storing
           const userData = JSON.parse(userStr)
           
-          // Store token and user info
-          localStorage.setItem('imegle_token', token)
+      // Store token and user info
+      localStorage.setItem('imegle_token', token)
           localStorage.setItem('imegle_user', JSON.stringify(userData)) // Ensure it's valid JSON
           setStatus('success')
-          
+
           // Redirect to dashboard immediately
           router.push('/')
         } catch (err) {
           console.error('Error parsing or storing auth data:', err)
           setStatus('error')
           setTimeout(() => {
-            router.push('/')
+      router.push('/')
           }, 2000)
         }
-      } else {
-        // No token, redirect to home
+    } else {
+      // No token, redirect to home
         console.warn('No token or user in callback URL')
         setStatus('error')
         setTimeout(() => {
@@ -60,7 +60,7 @@ function AuthCallbackContent() {
       console.error('Error processing callback:', err)
       setStatus('error')
       setTimeout(() => {
-        router.push('/')
+      router.push('/')
       }, 2000)
     }
   }, [router])
@@ -70,8 +70,8 @@ function AuthCallbackContent() {
       <div className="text-center">
         {status === 'loading' && (
           <>
-            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500 mx-auto mb-4"></div>
-            <p className="text-white text-xl">Completing login...</p>
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500 mx-auto mb-4"></div>
+        <p className="text-white text-xl">Completing login...</p>
           </>
         )}
         {status === 'success' && (

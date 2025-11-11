@@ -61,6 +61,13 @@ async function bootstrap() {
       /^https:\/\/10\.\d+\.\d+\.\d+:3000$/,
       /^http:\/\/172\.(1[6-9]|2[0-9]|3[0-1])\.\d+\.\d+:3000$/,
       /^https:\/\/172\.(1[6-9]|2[0-9]|3[0-1])\.\d+\.\d+:3000$/,
+      // Allow Netlify domains
+      /^https:\/\/.*\.netlify\.app$/,
+      /^https:\/\/.*\.netlify\.dev$/,
+      // Allow ngrok domains
+      /^https:\/\/.*\.ngrok-free\.app$/,
+      /^https:\/\/.*\.ngrok\.io$/,
+      /^https:\/\/.*\.ngrok-free\.dev$/,
     ];
     
     app.use(cors({
@@ -88,6 +95,8 @@ async function bootstrap() {
       },
       credentials: true,
     }));
+    
+    console.log('✅ CORS configured - allowing Netlify and ngrok domains');
 
     // Global validation pipe
     app.useGlobalPipes(new ValidationPipe({

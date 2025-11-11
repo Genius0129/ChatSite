@@ -54,17 +54,17 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         return done(new Error('No email in Google profile'), null);
       }
 
-      const { name, emails, photos } = profile;
-      const user = {
-        email: emails[0].value,
-        name: name.givenName + ' ' + name.familyName,
+    const { name, emails, photos } = profile;
+    const user = {
+      email: emails[0].value,
+      name: name.givenName + ' ' + name.familyName,
         picture: photos?.[0]?.value || '',
-        googleId: profile.id,
-        accessToken,
-      };
+      googleId: profile.id,
+      accessToken,
+    };
       
       console.log('✅ GoogleStrategy validated user:', user.email);
-      done(null, user);
+    done(null, user);
     } catch (error) {
       console.error('❌ Error in GoogleStrategy.validate:', error);
       done(error, null);
