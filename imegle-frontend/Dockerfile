@@ -2,6 +2,14 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
+# Accept build-time arguments for environment variables
+ARG NEXT_PUBLIC_SERVER_URL
+ARG NEXT_PUBLIC_GOOGLE_CLIENT_ID
+
+# Set as environment variables for the build
+ENV NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL
+ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=$NEXT_PUBLIC_GOOGLE_CLIENT_ID
+
 COPY package*.json ./
 RUN npm ci
 
