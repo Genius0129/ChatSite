@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: imegle-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+    networks:
+      - imegle-network
+
+  backend:
+    build:
+      context: ./imegle-backend
+      dockerfile: Dockerfile
+    container_name: imegle-backend
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=production
+      - PORT=3002
+      - REDIS_URL=redis://redis:6379
+      - CLIENT_URL=http://localhost:3000
+      - USE_CLUSTER=true
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - imegle-network
+
+  frontend:
+    build:
+      context: ./imegle-frontend
+      dockerfile: Dockerfile
+    container_name: imegle-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_SERVER_URL=http://localhost:3002
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - imegle-network
+
+volumes:
+  redis-data:
+
+networks:
+  imegle-network:
+    driver: bridge
+
