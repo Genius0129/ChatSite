@@ -12,7 +12,7 @@ A real-time, peer-to-peer video and text chat application that connects stranger
 - 🛡️ **Moderation**: Report users, IP-based banning, optional keyword filtering
 - 📱 **Responsive Design**: Beautiful, modern UI that works seamlessly on desktop and mobile devices
 - 🚀 **Production Ready**: Docker support, scalable architecture
-- 📈 **Scalable**: Redis support available for 5000-10000+ concurrent users (see SCALABILITY_REQUIREMENTS.md)
+- 📈 **Scalable**: Redis support available for 5000-10000+ concurrent users
 
 ## Quick Start
 
@@ -58,7 +58,7 @@ cd client && npm install && cd ..
 npm run dev
 ```
 
-For detailed installation instructions, see [INSTALLATION.md](./INSTALLATION.md)
+For installation, follow the steps above.
 
 The application will be available at:
 - Frontend: http://localhost:5173
@@ -94,8 +94,7 @@ ChatSite/
 │   └── package.json
 ├── Dockerfile                 # Docker configuration
 ├── docker-compose.yml
-├── DEPLOYMENT.md              # Detailed deployment guide
-└── PROJECT_PROPOSAL.md        # Architecture and design docs
+└── docker-compose.imegle.yml  # Docker Compose configuration
 ```
 
 ## Technology Stack
@@ -128,8 +127,6 @@ ChatSite/
 7. **Edit Interests**: Click "Edit Interests" in the header to change your interests anytime
 
 ## Deployment
-
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
 
 ### Quick Docker Deploy
 
@@ -217,9 +214,7 @@ MIT License - feel free to use this project for your own purposes.
 
 ## Support
 
-For deployment issues, see [DEPLOYMENT.md](./DEPLOYMENT.md).
-
-For architecture details, see [PROJECT_PROPOSAL.md](./PROJECT_PROPOSAL.md).
+For deployment, use Docker Compose as shown above.
 
 ---
 
