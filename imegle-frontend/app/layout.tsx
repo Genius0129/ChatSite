@@ -4,7 +4,7 @@ import Script from 'next/script'
 import ToastContainer from '@/components/Toast'
 
 export const metadata: Metadata = {
-  title: 'imegle.io - Random Video Chat111',
+  title: 'imegle.io - Random Video Chat',
   description: 'Connect with strangers via video and text chat',
 }
 
