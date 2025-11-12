@@ -53,7 +53,7 @@ export default function Home() {
     const serverUrl = getServerUrl()
     console.log('🚀 Connecting to server:', serverUrl)
 
-    console.log('🚀 Deployment test - Build timestamp:', new Date().toISOString())
+    console.log('ddddddddddddddddddddd')
     
     // Don't attempt connection if server URL is invalid
     if (!serverUrl || serverUrl === '') {
