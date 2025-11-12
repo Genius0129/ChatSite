@@ -19,6 +19,8 @@ function AuthCallbackContent() {
       const userStr = params.get('user')
       const error = params.get('error')
 
+      console.log('🚀 Deployment test - Build timestamp:', new Date().toISOString())
+
       if (error) {
         console.error('OAuth error:', error)
         setStatus('error')
